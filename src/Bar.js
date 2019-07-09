@@ -13,9 +13,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import shallowEqual from 'fbjs/lib/shallowEqual'
 
-import { createUseStyles, combineAnimatedStyle, isSameLayout } from './utils'
+import { shallowEqual, createUseStyles, combineAnimatedStyle, isSameLayout } from './utils'
 
 const noop = () => null
 

@@ -1,6 +1,6 @@
 {
   "name": "react-native-tabify",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Easy to create multi-style tabs for React Native",
   "main": "src/index.js",
   "license": "MIT",
@@ -9,7 +9,7 @@
   },
   "author": {
     "name": "Smadey",
-    "email": "smadey@163.ccom"
+    "email": "smadey@163.com"
   },
   "keywords": [
     "react",
