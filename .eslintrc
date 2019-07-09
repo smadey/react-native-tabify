@@ -1,0 +1,31 @@
+{
+  "extends": [
+    "airbnb"
+  ],
+  "parser": "babel-eslint",
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".android.js", ".ios.js", ".js"]
+      }
+    }
+  },
+  "rules": {
+    "arrow-body-style": [0],
+    "import/no-unresolved": [2, { "ignore": ["^react(-native)?$", "fbjs"] }],
+    "import/prefer-default-export": [0],
+    "max-len": [2, { "code": 150 }],
+    "no-func-assign": [0],
+    "no-nested-ternary": [0],
+    "no-param-reassign": [0],
+    "no-plusplus": [0],
+    "no-return-assign": [0],
+    "no-unused-expressions": [0],
+    "object-curly-newline": [0],
+    "react/destructuring-assignment": [0],
+    "react/jsx-filename-extension": [0],
+    "react/prop-types": [0],
+    "prefer-destructuring": [0],
+    "semi": [0]
+  }
+}
