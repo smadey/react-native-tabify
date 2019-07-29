@@ -83,7 +83,7 @@ export default ({ usePager }) => {
                 style={{ overflow: 'hidden', width }}
               >
                 {
-                  focused || self.loaded.includes(i)
+                  focused || !route.lazy || self.loaded.includes(i)
                     ? children[i]
                     : null
                 }

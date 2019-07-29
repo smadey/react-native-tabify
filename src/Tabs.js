@@ -14,16 +14,32 @@ import {
 
 import { createUseStyles } from './utils'
 
-export function createTabs({ Bar, Scene, Pager, styles: stylesOptions }) {
+export function createTabs({ Bar, Pager, Scene, styles: stylesOptions }) {
   const useStyles = createUseStyles(stylesOptions)
 
-  function Tabs({ style, barPosition, initialTab, renderTabScroller, onTabFocused, onTabChange, children }, forwardedRef) {
+  const defaultRenderBar = props => <Bar {...props} />
+  const defaultRenderPager = props => <Pager {...props} />
+  const defaultRenderScene = props => <Scene {...props} />
+
+  function Tabs({
+    style,
+    initialTab,
+    barPosition,
+    renderBar = defaultRenderBar,
+    renderPager = defaultRenderPager,
+    renderScene = defaultRenderScene,
+    onTabFocused,
+    onTabChange,
+    children,
+  }, forwardedRef) {
     const styles = useStyles()
 
     const [tabs, routes] = useMemo(() => {
       const nextTabs = {}
       const nextRoutes = []
       React.Children.forEach(children, (tab, index) => {
+        if (!tab) return
+
         const { name, title, subTitle, badge, lazy } = tab.props
         const key = name || title || `tab-${index}`
         nextTabs[key] = tab
@@ -67,41 +83,36 @@ export function createTabs({ Bar, Scene, Pager, styles: stylesOptions }) {
       jumpTo,
     }), [])
 
-    const renderBar = () => {
-      return <Bar navigationState={state} position={position} jumpTo={jumpTo} />
-    }
-
-    const renderPager = () => {
-      return (
-        <Pager navigationState={state} position={position} jumpTo={jumpTo}>
-          {
-            routes.map((route, i) => {
-              return (
-                <Scene
-                  key={route.key}
-                  route={route}
-                  tab={tabs[route.key]}
-                  focused={i === index}
-                  jumpTo={jumpTo}
-                  renderTabScroller={renderTabScroller}
-                />
-              )
-            })
-          }
-        </Pager>
-      )
-    }
-
     useEffect(() => {
       const route = routes[index]
       route && onTabFocused && onTabFocused({ index, key: route.key })
     }, [])
 
+    const props = {
+      navigationState: state,
+      position,
+      jumpTo,
+    }
+
     return (
       <View collapsable={false} style={[styles.container, style]}>
-        {barPosition === 'top' && renderBar()}
-        {renderPager()}
-        {barPosition === 'bottom' && renderBar()}
+        {
+          barPosition === 'top' && renderBar(props)
+        }
+        {
+          renderPager({
+            ...props,
+            children: routes.map((route, i) => renderScene({
+              key: route.key,
+              route,
+              tab: tabs[route.key],
+              focused: i === index,
+            })),
+          })
+        }
+        {
+          barPosition === 'bottom' && renderBar(props)
+        }
       </View>
     )
   }

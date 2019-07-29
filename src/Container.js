@@ -100,7 +100,9 @@ function usePlaceholder() {
   }, [])
 }
 
-export function createContainer({ Tabs }) {
+export function createContainer({ Tabs, Scene }) {
+  const defaultRenderScene = props => <Scene {...props} />
+
   function TabScroller({ tabKey, onTabScrollerRef, onTabScrollerLayout, onTabScrollerScrollEnd, ...props }, forwardedRef) {
     const state = useMemo(() => ({ enabled: false }), [])
 
@@ -229,7 +231,8 @@ export function createContainer({ Tabs }) {
       })
     })
 
-    props.renderTabScroller = useMemo(() => {
+    const renderScene = props.renderScene || defaultRenderScene
+    props.renderScene = useMemo(() => {
       const onTabScrollerLayout = (tabKey, { height, contentHeight }) => {
         addPlaceholderHeight(tabKey, contentHeight - height)
 
@@ -249,7 +252,7 @@ export function createContainer({ Tabs }) {
         setTabEnabled(tabKey, false)
         setTabScrollTop(tabKey, 0)
       }
-      return tabScrollerProps => (
+      const renderTabScroller = tabScrollerProps => (
         <TabScroller
           {...tabScrollerProps}
           onTabScrollerRef={setTabRef}
@@ -257,7 +260,9 @@ export function createContainer({ Tabs }) {
           onTabScrollerScrollEnd={onTabScrollerScrollEnd}
         />
       )
-    }, [])
+      return sceneProps => renderScene({ ...sceneProps, renderTabScroller })
+    }, [renderScene])
+
     props = useEvent(props, 'onTabFocused', ({ key }) => {
       if (getScrollerEnabled()) {
         setTabScrollTop(key, 0)

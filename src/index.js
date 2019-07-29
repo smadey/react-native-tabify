@@ -95,8 +95,8 @@ function createTabify(options) {
   define(Tabify, 'Tabs', () => {
     return createTabs({
       Bar: Tabify.Bar,
-      Scene: Tabify.Scene,
       Pager: Tabify.Pager,
+      Scene: Tabify.Scene,
       ...options.tabs,
     })
   })
@@ -104,6 +104,7 @@ function createTabify(options) {
   define(Tabify, 'Container', () => {
     return createContainer({
       Tabs: Tabify.Tabs,
+      Scene: (options.tabs && options.tabs.Scene) || Tabify.Scene,
       ...options.container,
     })
   })

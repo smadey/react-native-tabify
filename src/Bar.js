@@ -76,14 +76,14 @@ export function createBarItem({ TouchableItem, styles: stylesOptions, isNeedCont
       <TouchableItem style={styles.container} onLayout={onContainerLayout} onPress={onPress}>
         <View style={styles.content} onLayout={onContentLayout}>
           {
-            typeof title === 'string'
-              ? <Animated.Text style={titleStyle}>{title}</Animated.Text>
-              : typeof title === 'function'
-                ? title(route)
+            typeof title === 'function'
+              ? title(route)
+              : title != null && title !== ''
+                ? <Animated.Text style={titleStyle}>{title}</Animated.Text>
                 : null
           }
           {
-            subTitle
+            subTitle != null && subTitle !== ''
               ? <Animated.Text style={subTitleStyle}>{subTitle}</Animated.Text>
               : null
           }
@@ -113,10 +113,7 @@ export function createBarIndicator({ styles: stylesOptions, getWidth, getOffset,
   }
 
   if (!getOffset) {
-    getOffset = (layouts) => {
-      const widths = getWidth(layouts)
-      return layouts.map((d, i) => (d.container.x + (d.container.width - widths[i]) / 2))
-    }
+    getOffset = (layouts, widths) => layouts.map((d, i) => (d.container.x + (d.container.width - widths[i]) / 2))
   }
 
   if (!render) {
@@ -130,7 +127,7 @@ export function createBarIndicator({ styles: stylesOptions, getWidth, getOffset,
 
     const style = useMemo(() => {
       const width = interpolate(getWidth)
-      const translateX = interpolate(getOffset)
+      const translateX = interpolate(layouts => getOffset(layouts, getWidth(layouts)))
       return [styles.container, { transform: [{ translateX }], width }]
     }, [styles.container, interpolate])
 
@@ -140,7 +137,7 @@ export function createBarIndicator({ styles: stylesOptions, getWidth, getOffset,
   return memo(BarIndicator)
 }
 
-export function createBar({ BarItem, BarIndicator, styles: stylesOptions, isScrollable, isShowIndicator, wrapper }) {
+export function createBar({ BarItem, BarIndicator, styles: stylesOptions, isScrollable, isShowIndicator }) {
   const useStyles = createUseStyles(stylesOptions)
 
   const isNeedItemsLayouts = isScrollable || isShowIndicator
@@ -266,7 +263,7 @@ export function createBar({ BarItem, BarIndicator, styles: stylesOptions, isScro
       }
     }
 
-    const bar = (
+    return (
       <Container {...containerProps}>
         {
           routes.map((route, routeIndex) => (
@@ -283,8 +280,6 @@ export function createBar({ BarItem, BarIndicator, styles: stylesOptions, isScro
         {indicator}
       </Container>
     )
-
-    return wrapper ? wrapper({ children: bar }) : bar
   }
 
   return memo(Bar)
