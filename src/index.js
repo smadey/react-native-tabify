@@ -177,6 +177,7 @@ export default createTabify({
     styles: {
       container: {
         flex: 1,
+        overflow: 'hidden',
       },
     },
   },
