@@ -189,7 +189,8 @@ export function createBar({ BarItem, BarIndicator, styles: stylesOptions, isScro
 
     const onLayout = useCallback((e) => {
       const layout = e.nativeEvent.layout
-      if (!isSameLayout(layouts.container, layout, ['width'])) {
+      // 当 ScrollView 在不可见的状态下初始时，宽度为 0
+      if (layout.width > 0 && !isSameLayout(layouts.container, layout, ['width'])) {
         layouts.container = { width: layout.width }
         layouts.sync()
       }

@@ -25,7 +25,8 @@ export default ({ usePager }) => {
       shared: self,
       setLayout(layout) {
         const w = round(layout.width)
-        if (self.width !== w) {
+        // 当 ScrollView 在不可见的状态下初始时，宽度为 0
+        if (w > 0 && self.width !== w) {
           self.width = w
           setWidth(w)
         }
