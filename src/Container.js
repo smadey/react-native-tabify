@@ -166,7 +166,7 @@ export function createContainer({ Tabs, Scene }) {
   }
   TabScroller = memo(forwardRef(TabScroller))
 
-  function Container({ HeaderComponent, ...props }, forwardedRef) {
+  function Container({ HeaderComponent, onScroll: onScrollProp, ...props }, forwardedRef) {
     const [containerHeight, setContainerHeight] = useState()
     const state = useMemo(() => ({}), [])
 
@@ -205,6 +205,8 @@ export function createContainer({ Tabs, Scene }) {
     }, [])
 
     const onScroll = useCallback((e) => {
+      onScrollProp && onScrollProp(e)
+
       if (!getScrollerEnabled()) return
 
       const activeTabKey = state.activeTabKey
@@ -213,7 +215,7 @@ export function createContainer({ Tabs, Scene }) {
       const scrollTop = round(e.nativeEvent.contentOffset.y)
       const tabScrollTop = Math.max(scrollTop - state.headerHeight, 0) // tab 的 scrollTop 小于 0 会有异常
       setTabScrollTop(activeTabKey, tabScrollTop)
-    }, [])
+    }, [onScrollProp])
 
     const onScrollEndProps = useScrollEnd({}, (e) => {
       if (!getScrollerEnabled()) return
