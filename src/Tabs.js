@@ -25,6 +25,7 @@ export function createTabs({ Bar, Pager, Scene, styles: stylesOptions }) {
     style,
     initialTab,
     barPosition,
+    maxCacheCount,
     renderBar = defaultRenderBar,
     renderPager = defaultRenderPager,
     renderScene = defaultRenderScene,
@@ -102,6 +103,7 @@ export function createTabs({ Bar, Pager, Scene, styles: stylesOptions }) {
         {
           renderPager({
             ...props,
+            maxCacheCount,
             children: routes.map((route, i) => renderScene({
               key: route.key,
               route,

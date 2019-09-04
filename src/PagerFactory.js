@@ -14,7 +14,7 @@ const SCREEN_WIDTH = Dimensions.get('window').width
 const round = Math.round
 
 export default ({ usePager }) => {
-  function Pager({ navigationState, position, offsetX, panX, jumpTo, children }) {
+  function Pager({ navigationState, position, offsetX, panX, jumpTo, maxCacheCount, children }) {
     const { index, routes } = navigationState
 
     const [width, setWidth] = useState(SCREEN_WIDTH)
@@ -63,11 +63,13 @@ export default ({ usePager }) => {
       }
 
       const loaded = self.loaded
-      if (!loaded.includes(index)) {
-        loaded.splice(0, loaded.length - 2) // 只保留最近的 3 个，防止太多了 crash
-        loaded.push(index)
+      if (loaded.includes(index)) {
+        loaded.splice(loaded.indexOf(index), 1)
+      } else {
+        loaded.splice(0, loaded.length - (maxCacheCount || 3)) // 只缓存最近的 N 个，防止太多了 crash
       }
-    }, [index, routes])
+      loaded.push(index)
+    }, [index, routes, maxCacheCount])
 
     children = React.Children.toArray(children)
 
