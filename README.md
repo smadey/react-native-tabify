@@ -67,6 +67,7 @@ function Component() {
 #### Pager
 | Prop | Description | Default |
 |---|---|---|
+|**`ViewPagerAndroid`**|The ViewPager for android. |`ViewPagerAndroid`|
 
 #### Tabs
 | Prop | Description | Default |

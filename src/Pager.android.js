@@ -5,7 +5,6 @@ import React, {
 } from 'react'
 import {
   StyleSheet,
-  ViewPagerAndroid,
 } from 'react-native'
 
 import createPagerComponent from './PagerFactory'
@@ -16,7 +15,10 @@ const styles = StyleSheet.create({
   },
 })
 
-export function createPager() {
+export function createPager({ ViewPagerAndroid }) {
+  if (!ViewPagerAndroid) {
+    ViewPagerAndroid = require('react-native').default.ViewPagerAndroid
+  }
   return createPagerComponent({
     usePager({ shared, setLayout, onScrolling, onStopped }) {
       const self = useMemo(() => ({ idle: true }), [])
