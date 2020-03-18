@@ -13,8 +13,10 @@ const SCREEN_WIDTH = Dimensions.get('window').width
 
 const round = Math.round
 
-export default ({ usePager }) => {
+export default ({ useStyles, usePager }) => {
   function Pager({ navigationState, position, offsetX, panX, jumpTo, maxCacheCount, children }) {
+    const styles = useStyles()
+
     const { index, routes } = navigationState
 
     const [width, setWidth] = useState(SCREEN_WIDTH)
@@ -74,6 +76,7 @@ export default ({ usePager }) => {
     children = React.Children.toArray(children)
 
     return render({
+      styles,
       /* eslint-disable indent */
       children: width > 0
         ? routes.map((route, i) => {
@@ -83,7 +86,11 @@ export default ({ usePager }) => {
                 key={route.key}
                 accessibilityElementsHidden={!focused}
                 importantForAccessibility={focused ? 'auto' : 'no-hide-descendants'}
-                style={{ overflow: 'hidden', width }}
+                style={[
+                  { overflow: 'hidden', width },
+                  styles.scene,
+                  styles[`scene_${route.key}`],
+                ]}
               >
                 {
                   focused || !route.lazy || self.loaded.includes(i)

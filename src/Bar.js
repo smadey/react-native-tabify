@@ -59,10 +59,18 @@ export function createBarItem({ TouchableItem, styles: stylesOptions, isNeedCont
       const getAnimatedValue = (value, activeValue) => interpolate(input => input.map(i => (i === index ? activeValue : value)))
 
       return [
-        combineAnimatedStyle(styles.title, styles.activeTitle, getAnimatedValue),
-        combineAnimatedStyle(styles.subTitle, styles.activeTitle, getAnimatedValue),
+        combineAnimatedStyle(
+          [styles.title, styles[`title_${key}`]],
+          [styles.activeTitle, styles[`activeTitle_${key}`]],
+          getAnimatedValue,
+        ),
+        combineAnimatedStyle(
+          [styles.subTitle, styles[`subTitle_${key}`]],
+          [styles.activeTitle, styles[`activeTitle_${key}`]],
+          getAnimatedValue,
+        ),
       ]
-    }, [styles, interpolate, index])
+    }, [styles, interpolate, index, key])
 
     const layouts = useLayouts()
     const onContainerLayout = useContainerLayout(index, layouts, onLayouts)

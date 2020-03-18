@@ -3,23 +3,17 @@ import React, {
   useMemo,
   useCallback,
 } from 'react'
-import {
-  StyleSheet,
-} from 'react-native'
 
 import createPagerComponent from './PagerFactory'
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-})
-
-export function createPager({ ViewPagerAndroid }) {
+export function createPager({ ViewPagerAndroid, styles: stylesOptions }) {
   if (!ViewPagerAndroid) {
     ViewPagerAndroid = require('react-native').default.ViewPagerAndroid
   }
+  const useStyles = createUseStyles(stylesOptions)
+
   return createPagerComponent({
+    useStyles,
     usePager({ shared, setLayout, onScrolling, onStopped }) {
       const self = useMemo(() => ({ idle: true }), [])
 
@@ -53,7 +47,7 @@ export function createPager({ ViewPagerAndroid }) {
       }, [])
 
       return [
-        ({ children }) => {
+        ({ styles, children }) => {
           return (
             <ViewPagerAndroid
               initialPage={shared.index}

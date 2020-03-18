@@ -173,6 +173,17 @@ export default createTabify({
       },
     },
   },
+  pager: {
+    styles: {
+      container: {
+        flex: 1,
+      },
+      content: {
+        flex: 1,
+        overflow: 'hidden',
+      },
+    },
+  },
   tabs: {
     styles: {
       container: {

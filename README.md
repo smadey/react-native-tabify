@@ -68,6 +68,7 @@ function Component() {
 | Prop | Description | Default |
 |---|---|---|
 |**`ViewPagerAndroid`**|The ViewPager for android. |`ViewPagerAndroid`|
+|**`styles`**|A styles object or function which return styles object, styles object has `container`、`content`、`scene` keys. ||
 
 #### Tabs
 | Prop | Description | Default |

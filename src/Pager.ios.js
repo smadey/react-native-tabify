@@ -5,23 +5,16 @@ import React, {
 } from 'react'
 import {
   ScrollView,
-  StyleSheet,
 } from 'react-native'
 
+import { createUseStyles } from './utils'
 import createPagerComponent from './PagerFactory'
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  content: {
-    flex: 1,
-    overflow: 'hidden',
-  },
-})
+export function createPager({ styles: stylesOptions }) {
+  const useStyles = createUseStyles(stylesOptions)
 
-export function createPager() {
   return createPagerComponent({
+    useStyles,
     usePager({ shared, setLayout, onScrolling, onStopped }) {
       const self = useMemo(() => ({ idle: true }), [])
 
@@ -56,7 +49,7 @@ export function createPager() {
       }, [])
 
       return [
-        ({ children }) => {
+        ({ styles, children }) => {
           return (
             <ScrollView
               alwaysBounceHorizontal={false}
