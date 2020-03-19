@@ -4,6 +4,7 @@ import React, {
   useCallback,
 } from 'react'
 
+import { createUseStyles } from './utils'
 import createPagerComponent from './PagerFactory'
 
 export function createPager({ ViewPagerAndroid, styles: stylesOptions }) {
